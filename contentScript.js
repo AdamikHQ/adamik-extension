@@ -22,7 +22,6 @@ function MyButton() {
 
 // Function to replace the specific text with a React button
 function replaceTextWithReactButton() {
-  // Use XPath to find the span element that contains the text "Looking forward to connecting at"
   const xpath = "//span[contains(text(), 'Looking forward to connecting at')]";
   const result = document.evaluate(
     xpath,
@@ -34,23 +33,13 @@ function replaceTextWithReactButton() {
   const targetSpan = result.singleNodeValue;
 
   if (targetSpan) {
-    // Clear the span's original content
-    targetSpan.textContent = "";
-
-    // Create a div where the React component will be rendered
+    targetSpan.textContent = ""; // Clear the span's original content
     const reactRoot = document.createElement("div");
     targetSpan.appendChild(reactRoot);
-
-    // Render the React button into the div
     ReactDOM.render(React.createElement(MyButton), reactRoot);
-
-    console.log("Text replaced with React button.");
   } else {
-    console.log("Text not found, retrying...");
-    // Retry if the text is not found
-    setTimeout(replaceTextWithReactButton, 500);
+    setTimeout(replaceTextWithReactButton, 500); // Retry if not found
   }
 }
 
-// Run the replacement function after a short delay
-setTimeout(replaceTextWithReactButton, 500);
+setTimeout(replaceTextWithReactButton, 500); // Delay the execution to allow content to load

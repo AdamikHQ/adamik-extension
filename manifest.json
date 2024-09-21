@@ -6,7 +6,7 @@
   "content_scripts": [
     {
       "matches": ["https://*.twitter.com/*", "https://*.x.com/*"],
-      "js": ["contentScript.bundle.js"]
+      "js": ["dist/contentScript.bundle.js"]
     }
   ],
   "host_permissions": ["https://*.twitter.com/*", "https://*.x.com/*"],
