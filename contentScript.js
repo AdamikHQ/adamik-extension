@@ -19,9 +19,17 @@ function embedIframe() {
     // Create an iframe element
     const iframe = document.createElement("iframe");
     iframe.src = "https://adamik-blinks.vercel.app/default"; // The URL of the external component
-    iframe.style.width = "100%"; // Adjust the width of the iframe
-    iframe.style.height = "500px"; // Adjust the height of the iframe as necessary
+    iframe.style.width = "452px"; // Match width of the component
+    iframe.style.height = "424px"; // Match height of the component
     iframe.style.border = "none"; // Remove the border of the iframe
+    iframe.style.overflow = "hidden"; // Ensure no scrollbars are shown
+    iframe.scrolling = "no"; // Prevent iframe scrolling
+
+    // Adjust the iframe height dynamically based on content
+    iframe.onload = function () {
+      iframe.style.height =
+        iframe.contentWindow.document.body.scrollHeight + "px";
+    };
 
     // Append the iframe to the target span
     targetSpan.appendChild(iframe);
