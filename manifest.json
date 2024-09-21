@@ -1,14 +1,20 @@
 {
   "name": "Adamik Extension",
-  "description": "An extension to display multichain blinks",
+  "description": "An extension to display multichain blinks and modify web pages",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
     "default_popup": "hello.html",
     "default_icon": "adamik_logo.png"
   },
-  "permissions": ["storage"],
   "icons": {
     "48": "adamik_logo.png"
-  }
+  },
+  "permissions": ["activeTab", "scripting"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"]
+    }
+  ]
 }
