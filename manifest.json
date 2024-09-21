@@ -2,16 +2,15 @@
   "name": "Adamik Extension",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["activeTab", "https://*.twitter.com/*", "https://*.x.com/*"],
+  "permissions": ["activeTab"],
   "content_scripts": [
     {
-      "matches": ["https://*.twitter.com/*", "https://*.x.com/*"],
+      "matches": ["https://twitter.com/*", "https://x.com/*"],
       "js": ["dist/contentScript.bundle.js"]
     }
   ],
-  "host_permissions": ["https://*.twitter.com/*", "https://*.x.com/*"],
+  "host_permissions": ["https://twitter.com/*", "https://x.com/*"],
   "action": {
-    "default_popup": "popup.html",
     "default_icon": {
       "16": "adamik_logo.png",
       "48": "adamik_logo.png",
