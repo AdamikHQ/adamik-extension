@@ -1,41 +1,56 @@
-// Function to replace all link preview images with buttons
-function replaceLinkPreviewImagesWithButtons() {
-  // Select all images with the 'alt' attribute in Twitter link previews
-  const linkPreviewImages = document.querySelectorAll(
-    'a[href*="t.co"] img[alt=""]'
-  ); // Focus on empty 'alt' as in preview images
+import React from "react";
+import ReactDOM from "react-dom";
 
-  if (linkPreviewImages.length > 0) {
-    linkPreviewImages.forEach((imageElement) => {
-      // Confirm we have a link preview image and not just any image
-      const parentLink = imageElement.closest('a[href*="t.co"]');
+// React Component: A simple button that shows an alert
+function MyButton() {
+  return React.createElement(
+    "button",
+    {
+      style: {
+        backgroundColor: "#4CAF50",
+        color: "white",
+        padding: "10px 20px",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+      },
+      onClick: () => alert("Hello from React!"),
+    },
+    "Click Me!"
+  );
+}
 
-      if (parentLink) {
-        // Create a new button element to replace the preview image
-        const donateButton = document.createElement("button");
-        donateButton.textContent = "Click here to donate";
-        donateButton.style.backgroundColor = "#ffcc00"; // Style the button
-        donateButton.style.border = "none";
-        donateButton.style.padding = "10px";
-        donateButton.style.cursor = "pointer";
+// Function to replace the specific text with a React button
+function replaceTextWithReactButton() {
+  // Use XPath to find the span element that contains the text "Looking forward to connecting at"
+  const xpath = "//span[contains(text(), 'Looking forward to connecting at')]";
+  const result = document.evaluate(
+    xpath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  );
+  const targetSpan = result.singleNodeValue;
 
-        // Replace the preview image with the button
-        imageElement.replaceWith(donateButton);
+  if (targetSpan) {
+    // Clear the span's original content
+    targetSpan.textContent = "";
 
-        // Add an event listener to the button
-        donateButton.addEventListener("click", () => {
-          alert("Thank you for your donation!");
-        });
+    // Create a div where the React component will be rendered
+    const reactRoot = document.createElement("div");
+    targetSpan.appendChild(reactRoot);
 
-        console.log("Link preview image replaced with a donation button.");
-      }
-    });
+    // Render the React button into the div
+    ReactDOM.render(React.createElement(MyButton), reactRoot);
+
+    console.log("Text replaced with React button.");
   } else {
-    console.log("No link preview images found, retrying...");
-    // Retry every 500ms if no preview images are found
-    setTimeout(replaceLinkPreviewImagesWithButtons, 500);
+    console.log("Text not found, retrying...");
+    // Retry if the text is not found
+    setTimeout(replaceTextWithReactButton, 500);
   }
 }
 
-// Start the script after 500ms
-setTimeout(replaceLinkPreviewImagesWithButtons, 500);
+// Run the replacement function after a short delay
+setTimeout(replaceTextWithReactButton, 500);
