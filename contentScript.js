@@ -1,64 +1,8 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import { MetaMaskSDK } from "@metamask/sdk";
-
-const sdk = new MetaMaskSDK({
-  injectProvider: true,
-  dappMetadata: { name: "Adamik Extension", url: "https://adamik.io" },
-});
-
-async function connectMetamask() {
-  try {
-    const addresses = await sdk.connect();
-    if (addresses.length > 0) {
-      console.log("Connected MetaMask account:", addresses[0]);
-    } else {
-      console.warn("No MetaMask account found.");
-    }
-  } catch (err) {
-    console.error("MetaMask connection failed:", err);
-  }
-}
-
-// React Component: MetaMask Button
-function MetaMaskButton() {
-  const [connectedAddress, setConnectedAddress] = useState(null);
-
-  const handleConnect = async () => {
-    try {
-      const addresses = await sdk.connect();
-      if (addresses.length > 0) {
-        setConnectedAddress(addresses[0]);
-        console.log("Connected MetaMask account:", addresses[0]);
-      } else {
-        console.warn("No MetaMask account found.");
-      }
-    } catch (err) {
-      console.error("MetaMask connection failed:", err);
-    }
-  };
-
-  return (
-    <button
-      style={{
-        backgroundColor: "#4CAF50",
-        color: "white",
-        padding: "10px 20px",
-        border: "none",
-        borderRadius: "5px",
-        cursor: "pointer",
-      }}
-      onClick={handleConnect}
-    >
-      {connectedAddress ? `Connected: ${connectedAddress}` : "Connect MetaMask"}
-    </button>
-  );
-}
-
-// Function to replace the specific text with the React component
-function replaceTextWithReactButton() {
+// Function to embed the external component via iframe
+function embedIframe() {
   // Use XPath to find the span element that contains the text "Looking forward to connecting at"
-  const xpath = "//span[contains(text(), 'Looking forward to connecting at')]";
+  const xpath =
+    "//span[contains(text(), 'If you are hacking around, come and say Hi !')]";
   const result = document.evaluate(
     xpath,
     document,
@@ -69,23 +13,26 @@ function replaceTextWithReactButton() {
   const targetSpan = result.singleNodeValue;
 
   if (targetSpan) {
-    // Clear the span's original content
+    // Clear the span's content
     targetSpan.textContent = "";
 
-    // Create a div where the React component will be rendered
-    const reactRoot = document.createElement("div");
-    targetSpan.appendChild(reactRoot);
+    // Create an iframe element
+    const iframe = document.createElement("iframe");
+    iframe.src = "https://adamik-blinks.vercel.app/default"; // The URL of the external component
+    iframe.style.width = "100%"; // Adjust the width of the iframe
+    iframe.style.height = "500px"; // Adjust the height of the iframe as necessary
+    iframe.style.border = "none"; // Remove the border of the iframe
 
-    // Render the MetaMask Button into the div
-    ReactDOM.render(<MetaMaskButton />, reactRoot);
+    // Append the iframe to the target span
+    targetSpan.appendChild(iframe);
 
-    console.log("Text replaced with MetaMask button.");
+    console.log("Iframe with external component loaded.");
   } else {
-    console.log("Text not found, retrying...");
+    console.log("Target span not found, retrying...");
     // Retry if the text is not found
-    setTimeout(replaceTextWithReactButton, 500);
+    setTimeout(embedIframe, 500);
   }
 }
 
-// Run the replacement function after a short delay
-setTimeout(replaceTextWithReactButton, 500);
+// Run the function after a short delay to make sure the target element is available
+setTimeout(embedIframe, 500);
