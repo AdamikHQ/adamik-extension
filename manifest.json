@@ -1,12 +1,8 @@
 {
   "name": "Adamik Extension",
-  "description": "An extension to display multichain blinks and modify web pages",
+  "description": "An extension to modify web pages automatically",
   "version": "1.0",
   "manifest_version": 3,
-  "action": {
-    "default_popup": "hello.html",
-    "default_icon": "adamik_logo.png"
-  },
   "icons": {
     "48": "adamik_logo.png"
   },
