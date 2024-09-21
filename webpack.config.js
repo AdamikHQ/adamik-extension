@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/contentScript.js", // Path to your content script
+  entry: "./contentScript.js", // Path to your content script
   output: {
     filename: "contentScript.bundle.js", // Output filename
     path: path.resolve(__dirname, "dist"), // Output directory
