@@ -1,17 +1,5 @@
 // Function to embed the external component via iframe
-function embedIframe() {
-  // Use XPath to find the span element that contains the text "Looking forward to connecting at"
-  const xpath =
-    "//span[contains(text(), 'If you are hacking around, come and say Hi !')]";
-  const result = document.evaluate(
-    xpath,
-    document,
-    null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
-  );
-  const targetSpan = result.singleNodeValue;
-
+function embedIframe(targetSpan) {
   if (targetSpan) {
     // Clear the span's content
     targetSpan.textContent = "";
@@ -25,22 +13,44 @@ function embedIframe() {
     iframe.style.overflow = "hidden"; // Ensure no scrollbars are shown
     iframe.scrolling = "no"; // Prevent iframe scrolling
 
-    // Adjust the iframe height dynamically based on content
-    iframe.onload = function () {
-      iframe.style.height =
-        iframe.contentWindow.document.body.scrollHeight + "px";
-    };
-
     // Append the iframe to the target span
     targetSpan.appendChild(iframe);
 
     console.log("Iframe with external component loaded.");
-  } else {
-    console.log("Target span not found, retrying...");
-    // Retry if the text is not found
-    setTimeout(embedIframe, 500);
   }
 }
 
-// Run the function after a short delay to make sure the target element is available
-setTimeout(embedIframe, 500);
+// Function to scan for specific text and replace it with an iframe
+function scanAndReplace() {
+  const xpath =
+    "//span[contains(text(), 'If you are hacking around, come and say Hi !')]";
+  const result = document.evaluate(
+    xpath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  );
+  const targetSpan = result.singleNodeValue;
+
+  if (targetSpan) {
+    // Run the iframe replacement
+    embedIframe(targetSpan);
+  }
+}
+
+// MutationObserver to detect new elements added to the page
+const observer = new MutationObserver((mutationsList) => {
+  for (const mutation of mutationsList) {
+    if (mutation.type === "childList") {
+      // Call the scan and replace function when a new node is added
+      scanAndReplace();
+    }
+  }
+});
+
+// Observe the entire body for changes
+observer.observe(document.body, { childList: true, subtree: true });
+
+// Run the initial scan to catch any existing instances
+setTimeout(scanAndReplace, 500);
